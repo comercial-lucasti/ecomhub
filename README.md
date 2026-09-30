@@ -1,6 +1,8 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&height=200&color=0:2b2b2b,100:E0B101&text=EComHub&fontColor=ffffff&fontSize=60&fontAlignY=38&desc=Central%20de%20opera%C3%A7%C3%A3o%20para%20e-commerce&descAlignY=62&descSize=20" alt="EComHub" />
+<img src="https://capsule-render.vercel.app/api?type=waving&height=130&color=0:2b2b2b,100:E0B101&section=header" alt="Banner EComHub" />
+
+# EComHub
 
 **Uma plataforma única que substitui várias ferramentas pagas na operação diária de vendas online.**
 Etiquetas, expedição, margem, estoque, reposição e IA, num só lugar e sem mensalidade de terceiros.
