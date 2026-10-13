@@ -5,7 +5,7 @@
 # EComHub
 
 **Uma plataforma única que substitui várias ferramentas pagas na operação diária de vendas online.**
-Etiquetas, expedição, margem, estoque, reposição e IA, num só lugar e sem mensalidade de terceiros.
+Etiquetas, expedição, fulfillment, devoluções, margem, estoque, reposição, alertas e IA, num só lugar e sem mensalidade de terceiros.
 
 ![Google Apps Script](https://img.shields.io/badge/Google%20Apps%20Script-2b2b2b?style=for-the-badge&logo=google&logoColor=E0B101)
 ![JavaScript](https://img.shields.io/badge/JavaScript-2b2b2b?style=for-the-badge&logo=javascript&logoColor=E0B101)
@@ -29,22 +29,44 @@ O **EComHub** reúne essas rotinas em um único painel com login, conectado ao E
 
 ## Módulos
 
+### Expedição
+
 | Módulo | O que entrega |
 |---|---|
-| 🏷️ **Etiqueta Pronta · Mercado Livre** | Prepara as etiquetas de expedição em PDF diretamente no navegador do usuário |
+| 🏷️ **Etiqueta Pronta · Mercado Livre** | Etiqueta + DANFE + faixa de SKU/quantidade em PDF no navegador, com **trava de segurança**: cada SKU é conferido com o pedido no ERP e o download só libera se tudo bater |
 | 🏷️ **Etiqueta Pronta · TikTok Shop** | Mesmo fluxo para o TikTok Shop, incluindo o tratamento do DANFE |
-| ✅ **Conferência de expedição** | Confere o que sai de cada pedido e guarda o histórico das conferências |
-| 💰 **Calculadora de margem** | Margem real por canal, com taxas configuráveis e ficha de custo por SKU |
-| ⏱️ **Pedidos atrasados** | Lê os pedidos do ERP e destaca o que está perto de estourar o prazo de despacho, com atualização automática |
-| 📊 **Relatório de meta** | Acompanhamento de metas, de acesso restrito a quem precisa ver |
-| 📦 **Estoque e reposição** | Lê estoque, pedidos, kits e compras do ERP e sugere **quanto comprar**, com curva ABC |
-| 🤖 **Assistente de IA (texto)** | Gera rascunhos de anúncios e respostas a compradores, usando o cadastro do produto |
+| ⚡ **ZPL Turbo** | Converte etiquetas ZPL em PDF (térmica ou A4) direto no navegador, centenas de uma vez, remove repetidas |
+| ✅ **Conferência de expedição** | Bipe por pacote: faltando, repetido, fora da coleta, com histórico |
+| 🚚 **Contagem de despachos** | Quantos pedidos saem hoje por forma de envio, despachados × faltando, mensagem pronta para a equipe |
+| ⏱️ **Pedidos atrasados e travados** | Destaca o que está perto de estourar o prazo e o que parou no meio do caminho (regras editáveis) |
+
+### Fulfillment e devoluções
+
+| Módulo | O que entrega |
+|---|---|
+| 📦 **Envios Full** | Checklist de cada envio para o fulfillment com fotos e vídeos por etapa, conferência SKU × quantidade, nota de remessa conferida no ERP e andamento em tempo real para a gestão |
+| ↩️ **Conferência de devoluções** | Recebimento por SKU (bom, avariado, faltou), fotos obrigatórias organizadas por nota, estoque liberado × avariado sem lançamento duplicado |
+| 📉 **Devoluções** | Taxa de devolução por SKU e por canal |
+
+### Gestão
+
+| Módulo | O que entrega |
+|---|---|
+| 💰 **Calculadora e margem por produto** | Margem real por canal com taxas por faixa de preço, frete e imposto; preço mínimo |
+| 📦 **Estoque e reposição** | Ruptura, curva ABC e **quanto comprar**; gera as ordens de compra no ERP com prévia |
+| 🔥 **Queima de estoque** | Produto parado, dinheiro parado e menor preço de promoção que ainda respeita a margem |
+| 🧾 **Saúde do cadastro** | GTIN, peso e medidas, NCM, foto, descrição e custo: o que falta em cada produto |
+| 📊 **Painel de vendas e meta** | Faturamento, pedidos, ticket e cancelamentos por canal; acompanhamento de meta (acesso restrito) |
+| 🔔 **Notificações** | Alertas automáticos num espaço do Google Chat: resumo da manhã, atrasos, ruptura, compras atrasadas, pedido grande, fechamento do dia |
+| 🤖 **Assistente de IA (texto)** | Rascunhos de anúncios e respostas a compradores a partir do cadastro do produto |
 
 ## Diferenciais
 
 - **Custo baixo:** roda em infraestrutura Google, sem servidor próprio e sem assinatura de ferramentas de terceiros.
 - **Privacidade por padrão:** PDFs e dados de clientes são processados **somente no navegador** de quem usa; nada disso passa pelo servidor.
 - **IA com cuidado:** o assistente remove dados pessoais (CPF, CNPJ, e-mail, telefone, CEP) e informações de custo e fornecedor **antes** de qualquer envio, tem limite diário de uso e registro de consumo.
+- **Rastreabilidade:** cada envio ao fulfillment e cada devolução guarda quem fez, quando, as fotos e os vídeos, para consultar meses depois.
+- **À prova de erro na etiqueta:** a etiqueta só é liberada quando os produtos conferem com o pedido no ERP.
 - **Decisão, não só relatório:** a reposição calcula a quantidade sugerida de compra a partir do ritmo de vendas, do prazo, da segurança e das compras já em andamento.
 
 ## Segurança
@@ -63,12 +85,17 @@ Os cálculos críticos são cobertos por testes automatizados:
 
 | Área | Cobertura |
 |---|---|
-| Estoque e reposição | 509 verificações contra um cálculo independente, com testes de mutação (alterações deliberadas no código que os testes precisam detectar) |
-| Assistente de IA | 28 verificações, incluindo a remoção de dados pessoais |
+| Estoque e reposição | 512 verificações contra um cálculo independente, com testes de mutação (alterações deliberadas no código que os testes precisam detectar) |
+| Etiquetas, ZPL e conferência de SKU | 45 verificações, incluindo listas com vários produtos no mesmo pacote |
+| Envios Full, devoluções e contagem | 124 verificações, incluindo repetição segura de etapas (sem lançamento duplicado) |
+| Painel, operação, compras, margem e notificações | 193 verificações |
+| Assistente de IA | 30 verificações, incluindo a remoção de dados pessoais |
+
+São **15 suítes e mais de 900 verificações** executadas a cada mudança.
 
 ## Tecnologias
 
-Google Apps Script · JavaScript · HTML/CSS · Google Sheets · Google Sites · Python (Google Colab) · APIs REST com OAuth 2 · LLMs via API
+Google Apps Script · JavaScript · HTML/CSS · Google Sheets · Google Drive · Google Chat · Google Sites · WebAssembly · Python (Google Colab) · APIs REST com OAuth 2 · LLMs via API
 
 ## Propriedade intelectual
 
